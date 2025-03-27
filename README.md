@@ -1,16 +1,18 @@
-# Connected University Platform
+# ConnectEd
 
-A modern web application for university students and professors to manage classes, meetings, and communication.
+A web application for connecting students and professors, facilitating easy communication and meeting scheduling.
 
 ## Features
+- User authentication (students and professors)
+- Meeting scheduling system
+- Real-time notifications
+- Profile management
+- Class management
 
-- **User Authentication**: Separate login flows for students and professors
-- **Class Management**: View classes, subgroups, and course information
-- **Meeting Scheduling**: Request and manage meetings between students and professors
-- **Chat System**: Communication between students and professors
-- **Notifications**: Get updates on important events
-- **Calendar**: Manage schedule and appointments
-- **Dark/Light Mode**: Customize your viewing experience
+## Technologies
+- React
+- Firebase
+- Tailwind CSS
 
 ## Technologies Used
 
@@ -111,4 +113,4 @@ The application follows a modular architecture:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.
