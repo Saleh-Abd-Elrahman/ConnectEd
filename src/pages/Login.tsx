@@ -6,73 +6,47 @@ import { registerUser } from '../services/authService';
 
 function Login() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('password123'); // Default password for convenience
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // In a real app, this would be verified with proper auth
-  // For demo purposes, we'll use demo accounts
-  const handleStudentLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!email.trim()) {
+      setError('Please enter your email address');
+      return;
+    }
     
     try {
       setError(null);
       setLoading(true);
       
-      // For demo purposes, use a predefined student account
-      const demoEmail = 'alex.johnson@university.edu';
-      const demoPassword = 'password123';
-      
-      // Try to login with the demo credentials
-      const user = await login(demoEmail, demoPassword).catch(async () => {
-        // If login fails, it might be because the demo account doesn't exist yet
-        // Create the student account (firebase only, actual DB seeding happens separately)
-        await registerUser(demoEmail, demoPassword, 'Alex Johnson', 'student');
-        
-        // Try logging in again after registration
-        return await login(demoEmail, demoPassword);
-      });
+      const user = await login(email, password);
       
       // Navigate based on user role
-      navigate('/home');
+      if (user.role === 'student') {
+        navigate('/home');
+      } else if (user.role === 'professor') {
+        navigate('/professor/home');
+      } else {
+        navigate('/home'); // Default fallback
+      }
     } catch (err) {
       console.error('Login error:', err);
-      setError('Failed to log in. Please try again.');
+      setError('Failed to log in. Please check your credentials and try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleProfessorLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      setError(null);
-      setLoading(true);
-      
-      // For demo purposes, use a predefined professor account
-      const demoEmail = 'sarah.chen@university.edu';
-      const demoPassword = 'password123';
-      
-      // Try to login with the demo credentials
-      const user = await login(demoEmail, demoPassword).catch(async () => {
-        // If login fails, it might be because the demo account doesn't exist yet
-        // Create the professor account (firebase only, actual DB seeding happens separately)
-        await registerUser(demoEmail, demoPassword, 'Professor Sarah Chen', 'professor');
-        
-        // Try logging in again after registration
-        return await login(demoEmail, demoPassword);
-      });
-      
-      // Navigate based on user role
-      navigate('/professor/home');
-    } catch (err) {
-      console.error('Login error:', err);
-      setError('Failed to log in. Please try again.');
-    } finally {
-      setLoading(false);
+  const handleUseSeededAccount = (type: 'student' | 'professor') => {
+    if (type === 'student') {
+      setEmail('vbarbier.ieu2021@student.ie.edu');
+    } else {
+      setEmail('cllorente@faculty.ie.edu');
     }
   };
 
@@ -101,7 +75,7 @@ function Login() {
             </div>
           )}
           
-          <div className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             <input
               type="email"
               value={email}
@@ -116,33 +90,44 @@ function Login() {
               placeholder="Password"
               className="w-full px-4 py-3 bg-black/10 border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:border-[#00A3FF] backdrop-blur-sm"
             />
-          </div>
 
-          <div className="text-center">
-            <a href="#" className="text-gray-300 hover:text-[#00A3FF] text-sm">
-              Forgot Password?
-            </a>
-          </div>
+            <div className="text-center">
+              <a href="#" className="text-gray-300 hover:text-[#00A3FF] text-sm">
+                Forgot Password?
+              </a>
+            </div>
 
-          <div className="space-y-3">
             <button
-              onClick={handleStudentLogin}
-              disabled={loading}
-              className="w-full py-3 px-4 bg-black/20 text-white rounded-full hover:bg-black/30 transition-all duration-200 backdrop-blur-sm disabled:opacity-50"
-            >
-              {loading ? 'Logging in...' : 'Login as Student'}
-            </button>
-            <button
-              onClick={handleProfessorLogin}
+              type="submit"
               disabled={loading}
               className="w-full py-3 px-4 bg-[#00A3FF] text-white rounded-full hover:bg-[#0088FF] transition-all duration-200 disabled:opacity-50"
             >
-              {loading ? 'Logging in...' : 'Login as Professor'}
+              {loading ? 'Logging in...' : 'Login'}
             </button>
+          </form>
+
+          <div className="space-y-3 pt-2">
+            <p className="text-center text-white/70 text-sm">Quick login with seeded accounts:</p>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => handleUseSeededAccount('student')}
+                disabled={loading}
+                className="flex-1 py-2 px-3 bg-black/20 text-white rounded-full hover:bg-black/30 transition-all duration-200 backdrop-blur-sm disabled:opacity-50 text-sm"
+              >
+                Use Student
+              </button>
+              <button
+                onClick={() => handleUseSeededAccount('professor')}
+                disabled={loading}
+                className="flex-1 py-2 px-3 bg-black/20 text-white rounded-full hover:bg-black/30 transition-all duration-200 backdrop-blur-sm disabled:opacity-50 text-sm"
+              >
+                Use Professor
+              </button>
+            </div>
           </div>
           
           <div className="text-center text-white/70 text-sm">
-            <p>For demo purposes, click any button to login with pre-configured credentials.</p>
+            <p>All seeded accounts use the password: password123</p>
           </div>
         </div>
       </div>
