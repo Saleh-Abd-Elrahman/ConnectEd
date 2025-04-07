@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Send, Paperclip } from 'lucide-react';
+import { useChat } from '../contexts/ChatContext';
+import { useAuth } from '../contexts/AuthContext';
+import { formatDistanceToNow } from 'date-fns';
 
 // Sample messages data for different chats
 const chatMessages = {
@@ -122,23 +125,136 @@ const chatData = {
 function ChatConversation() {
   const { chatId } = useParams();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const { 
+    chats, 
+    activeChatMessages, 
+    sendMessage, 
+    setActiveChat,
+    userInfoMap,
+    isUserOnline
+  } = useChat();
   const [newMessage, setNewMessage] = React.useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const currentChat = chatData[Number(chatId)];
-  const messages = chatMessages[Number(chatId)] || [];
+  // Find the current chat
+  const currentChat = chats.find(chat => chat.id === chatId);
 
-  const handleSend = (e: React.FormEvent) => {
+  // Set active chat when component mounts or chatId changes
+  useEffect(() => {
+    if (currentChat) {
+      setActiveChat(currentChat);
+    } else if (chats.length > 0 && chatId) {
+      // If direct navigation to chat ID and chat not loaded yet
+      const checkChat = chats.find(c => c.id === chatId);
+      if (checkChat) {
+        setActiveChat(checkChat);
+      } else {
+        // Chat not found, redirect to chats list
+        navigate('/chats');
+      }
+    }
+    
+    return () => {
+      // Clear active chat when component unmounts
+      setActiveChat(null);
+    };
+  }, [chatId, chats, setActiveChat, navigate]);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [activeChatMessages]);
+
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMessage.trim()) {
-      // In a real app, this would send the message to the backend
-      console.log('Sending message:', newMessage);
-      setNewMessage('');
+    if (newMessage.trim() && chatId) {
+      try {
+        await sendMessage(chatId, newMessage);
+        setNewMessage('');
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
     }
   };
 
+  const formatMessageTime = (timestamp: Date | { toDate: () => Date }) => {
+    if (!timestamp) return '';
+    
+    const date = timestamp instanceof Date ? timestamp : timestamp.toDate();
+    
+    // If it's today, show time
+    const now = new Date();
+    if (date.toDateString() === now.toDateString()) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    
+    // If it's within the last week, show relative time
+    return formatDistanceToNow(date, { addSuffix: true });
+  };
+
+  // Get chat display information
+  const getChatDisplayInfo = () => {
+    if (!currentChat) return { name: 'Loading...', type: 'direct' as const };
+    
+    if (currentChat.type === 'ai') {
+      return { 
+        name: 'Ed AI', 
+        type: 'ai' as const,
+        color: 'bg-purple-500',
+        online: true
+      };
+    }
+    
+    if (currentChat.type === 'group') {
+      return { 
+        name: currentChat.groupName || 'Group Chat', 
+        type: 'group' as const,
+        color: 'bg-green-500' 
+      };
+    }
+    
+    // For direct chats, find the other participant
+    const otherUserId = currentChat.participants.find(id => id !== currentUser?.id);
+    const otherUser = otherUserId ? userInfoMap[otherUserId] : null;
+    
+    if (!otherUser) {
+      return { 
+        name: 'Unknown User', 
+        type: 'direct' as const,
+        color: 'bg-gray-500' 
+      };
+    }
+    
+    return {
+      name: otherUser.displayName,
+      photoURL: otherUser.photoURL,
+      type: 'direct' as const,
+      color: otherUser.role === 'professor' ? 'bg-blue-500' : 'bg-orange-400',
+      online: otherUserId ? isUserOnline(otherUserId) : false,
+      role: otherUser.role
+    };
+  };
+
+  const chatInfo = getChatDisplayInfo();
+
   if (!currentChat) {
-    navigate('/chats');
-    return null;
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-center p-4">
+          <h2 className="text-xl font-semibold mb-2 dark:text-white">Loading chat...</h2>
+          <p className="text-gray-500 dark:text-gray-400">
+            If this persists, the chat may not exist or you don't have access to it.
+          </p>
+          <button
+            onClick={() => navigate('/chats')}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Return to Chats
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -152,24 +268,25 @@ function ChatConversation() {
           <ArrowLeft className="w-6 h-6 text-gray-600 dark:text-gray-400" />
         </button>
         <div className="flex items-center space-x-3">
-          {currentChat.image ? (
+          {chatInfo.photoURL ? (
             <img
-              src={`${currentChat.image}?w=100&h=100&fit=crop`}
-              alt={currentChat.name}
+              src={chatInfo.photoURL}
+              alt={chatInfo.name}
               className="w-10 h-10 rounded-full object-cover"
             />
           ) : (
-            <div className={`w-10 h-10 ${currentChat.color} rounded-full flex items-center justify-center text-white`}>
-              {currentChat.type === 'ai' ? currentChat.initial : <div className="w-5 h-5 bg-white/30 rounded-full" />}
+            <div className={`w-10 h-10 ${chatInfo.color} rounded-full flex items-center justify-center text-white`}>
+              {chatInfo.type === 'ai' ? 'AI' : chatInfo.name.charAt(0)}
             </div>
           )}
           <div>
-            <h2 className="font-medium dark:text-white">{currentChat.name}</h2>
+            <h2 className="font-medium dark:text-white">{chatInfo.name}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {currentChat.type === 'ai' && 'AI Assistant'}
-              {currentChat.type === 'group' && 'Group Chat'}
-              {currentChat.type === 'class' && 'Class Chat'}
-              {currentChat.type === 'direct' && 'Online'}
+              {chatInfo.type === 'ai' && 'AI Assistant'}
+              {chatInfo.type === 'group' && 'Group Chat'}
+              {chatInfo.type === 'direct' && (
+                chatInfo.online ? 'Online' : 'Offline'
+              )}
             </p>
           </div>
         </div>
@@ -177,34 +294,50 @@ function ChatConversation() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map(message => (
-          <div
-            key={message.id}
-            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-                message.isUser
-                  ? 'bg-[#00A3FF] text-white'
-                  : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white'
-              }`}
-            >
-              {!message.isUser && !message.isAI && (
-                <p className="text-sm font-medium text-[#00A3FF] dark:text-[#00A3FF] mb-1">
-                  {message.sender}
-                </p>
-              )}
-              <p>{message.content}</p>
-              <p className={`text-xs mt-1 ${
-                message.isUser
-                  ? 'text-blue-100'
-                  : 'text-gray-500 dark:text-gray-400'
-              }`}>
-                {message.time}
-              </p>
-            </div>
+        {activeChatMessages.length === 0 ? (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            No messages yet. Start the conversation!
           </div>
-        ))}
+        ) : (
+          activeChatMessages.map(message => {
+            const isUserMessage = message.senderId === currentUser?.id;
+            const sender = isUserMessage 
+              ? currentUser 
+              : message.senderId === 'AI_ASSISTANT'
+                ? { displayName: 'Ed AI', isAI: true }
+                : userInfoMap[message.senderId];
+                
+            return (
+              <div
+                key={message.id}
+                className={`flex ${isUserMessage ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+                    isUserMessage
+                      ? 'bg-[#00A3FF] text-white'
+                      : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white'
+                  }`}
+                >
+                  {!isUserMessage && (
+                    <p className="text-sm font-medium text-[#00A3FF] dark:text-[#00A3FF] mb-1">
+                      {sender?.displayName || 'Unknown User'}
+                    </p>
+                  )}
+                  <p>{message.text}</p>
+                  <p className={`text-xs mt-1 ${
+                    isUserMessage
+                      ? 'text-blue-100'
+                      : 'text-gray-500 dark:text-gray-400'
+                  }`}>
+                    {formatMessageTime(message.timestamp)}
+                  </p>
+                </div>
+              </div>
+            );
+          })
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Message Input */}

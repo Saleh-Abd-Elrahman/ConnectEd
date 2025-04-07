@@ -33,12 +33,39 @@ export const clearDatabase = async () => {
   
   // First, try to delete the demo users from Firebase Auth
   const demoEmails = [
-    'sarah.chen@university.edu',
-    'david.johnson@university.edu',
-    'liam.morgan@university.edu',
-    'alex.johnson@university.edu',
-    'emma.wilson@university.edu',
-    'michael.brown@university.edu'
+    'cllorente@faculty.ie.edu',
+    'vbarbier.ieu2021@student.ie.edu',
+    'lbrudniakber.ieu2021@student.ie.edu',
+    'ncajiao.ieu2021@student.ie.edu',
+    'rdantasmarti.ieu2021@student.ie.edu',
+    'cdecarcer.ieu2021@student.ie.edu',
+    'mroriz.ieu2021@student.ie.edu',
+    'jgarcia.ieu2021@student.ie.edu',
+    'dgrechezelko.ieu2021@student.ie.edu',
+    'tvonhabsburg.ieu2021@student.ie.edu',
+    'nkravchuk.ieu2021@student.ie.edu',
+    'clopez.ieu2021@student.ie.edu',
+    'elozoya.ieu2021@student.ie.edu',
+    'amartin.ieu2021@student.ie.edu',
+    'amasquelierp.ieu2021@student.ie.edu',
+    'imoral.ieu2021@student.ie.edu',
+    'jmorenoz.ieu2021@student.ie.edu',
+    'amory.ieu2021@student.ie.edu',
+    'rmosconikatc.ieu2021@student.ie.edu',
+    'qnguyen.ieu2021@student.ie.edu',
+    'aperin.ieu2021@student.ie.edu',
+    'mrestrepo.ieu2021@student.ie.edu',
+    'asafie.ieu2021@student.ie.edu',
+    'ssalinero.ieu2021@student.ie.edu',
+    'aschiavolin.ieu2021@student.ie.edu',
+    'ssella.ieu2021@student.ie.edu',
+    'rsiddiqui.ieu2021@student.ie.edu',
+    'atopalovic.ieu2021@student.ie.edu',
+    'murunuela.ieu2021@student.ie.edu',
+    'avalencia.ieu2021@student.ie.edu',
+    'cvelasco.ieu2021@student.ie.edu',
+    'tyadav.ieu2021@student.ie.edu',
+    'etakimoto.ieu2021@student.ie.edu'
   ];
   
   for (const email of demoEmails) {
@@ -77,33 +104,13 @@ export const seedUsers = async () => {
   // Professors
   const professors: Professor[] = [
     {
-      id: 'prof_chen',
-      email: 'sarah.chen@university.edu',
-      displayName: 'Professor Sarah Chen',
+      id: 'prof_llorente',
+      email: 'cllorente@faculty.ie.edu',
+      displayName: 'Professor Carlos Llorente',
       role: 'professor',
       department: 'Computer Science',
       officeHours: 'Mondays 3-5pm, Thursdays 2-4pm',
-      teachingClasses: ['cs401', 'cs271'],
-      createdAt: new Date()
-    },
-    {
-      id: 'prof_johnson',
-      email: 'david.johnson@university.edu',
-      displayName: 'Professor David Johnson',
-      role: 'professor',
-      department: 'Mathematics',
-      officeHours: 'Tuesdays 1-3pm, Fridays 11am-1pm',
-      teachingClasses: ['math301'],
-      createdAt: new Date()
-    },
-    {
-      id: 'prof_morgan',
-      email: 'liam.morgan@university.edu',
-      displayName: 'Professor Liam Morgan',
-      role: 'professor',
-      department: 'Business',
-      officeHours: 'Wednesdays 10am-12pm, Fridays 2-4pm',
-      teachingClasses: ['bus271'],
+      teachingClasses: ['cs401', 'cs271', 'math301', 'bus271'],
       createdAt: new Date()
     }
   ];
@@ -111,9 +118,9 @@ export const seedUsers = async () => {
   // Students
   const students: Student[] = [
     {
-      id: 'student_alex',
-      email: 'alex.johnson@university.edu',
-      displayName: 'Alex Johnson',
+      id: 'student_vbarbier',
+      email: 'vbarbier.ieu2021@student.ie.edu',
+      displayName: 'Victor Barbier',
       role: 'student',
       major: 'Computer Science',
       year: 3,
@@ -121,27 +128,317 @@ export const seedUsers = async () => {
       createdAt: new Date()
     },
     {
-      id: 'student_emma',
-      email: 'emma.wilson@university.edu',
-      displayName: 'Emma Wilson',
+      id: 'student_lbrudniakber',
+      email: 'lbrudniakber.ieu2021@student.ie.edu',
+      displayName: 'Lea Brudniak',
       role: 'student',
-      major: 'Economics',
-      year: 2,
-      enrolledClasses: ['math301', 'bus271'],
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
       createdAt: new Date()
     },
     {
-      id: 'student_michael',
-      email: 'michael.brown@university.edu',
-      displayName: 'Michael Brown',
+      id: 'student_ncajiao',
+      email: 'ncajiao.ieu2021@student.ie.edu',
+      displayName: 'Nicolas Cajiao',
       role: 'student',
-      major: 'Business',
-      year: 4,
-      enrolledClasses: ['cs271', 'bus271'],
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'cs271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_rdantasmarti',
+      email: 'rdantasmarti.ieu2021@student.ie.edu',
+      displayName: 'Ricardo Dantas',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_cdecarcer',
+      email: 'cdecarcer.ieu2021@student.ie.edu',
+      displayName: 'Carlos de Carcer',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'bus271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_mroriz',
+      email: 'mroriz.ieu2021@student.ie.edu',
+      displayName: 'Manuel Rodriguez',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_jgarcia',
+      email: 'jgarcia.ieu2021@student.ie.edu',
+      displayName: 'Jorge Garcia',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs271', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_dgrechezelko',
+      email: 'dgrechezelko.ieu2021@student.ie.edu',
+      displayName: 'Daria Grechezelko',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_tvonhabsburg',
+      email: 'tvonhabsburg.ieu2021@student.ie.edu',
+      displayName: 'Tamara von Habsburg',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'bus271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_nkravchuk',
+      email: 'nkravchuk.ieu2021@student.ie.edu',
+      displayName: 'Nikita Kravchuk',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_clopez',
+      email: 'clopez.ieu2021@student.ie.edu',
+      displayName: 'Carlos Lopez',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'cs271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_elozoya',
+      email: 'elozoya.ieu2021@student.ie.edu',
+      displayName: 'Eduardo Lozoya',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_amartin',
+      email: 'amartin.ieu2021@student.ie.edu',
+      displayName: 'Alvaro Martin',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'bus271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_amasquelierp',
+      email: 'amasquelierp.ieu2021@student.ie.edu',
+      displayName: 'Alexandre Masquelier',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_imoral',
+      email: 'imoral.ieu2021@student.ie.edu',
+      displayName: 'Ignacio Moral',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'cs271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_jmorenoz',
+      email: 'jmorenoz.ieu2021@student.ie.edu',
+      displayName: 'Javier Moreno',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_amory',
+      email: 'amory.ieu2021@student.ie.edu',
+      displayName: 'Alexandre Mory',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'bus271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_rmosconikatc',
+      email: 'rmosconikatc.ieu2021@student.ie.edu',
+      displayName: 'Riccardo Mosconi',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_qnguyen',
+      email: 'qnguyen.ieu2021@student.ie.edu',
+      displayName: 'Quoc Nguyen',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'cs271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_aperin',
+      email: 'aperin.ieu2021@student.ie.edu',
+      displayName: 'Alvaro Perin',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_mrestrepo',
+      email: 'mrestrepo.ieu2021@student.ie.edu',
+      displayName: 'Maria Restrepo',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'bus271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_asafie',
+      email: 'asafie.ieu2021@student.ie.edu',
+      displayName: 'Alexandru Safie',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_ssalinero',
+      email: 'ssalinero.ieu2021@student.ie.edu',
+      displayName: 'Sofia Salinero',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'cs271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_aschiavolin',
+      email: 'aschiavolin.ieu2021@student.ie.edu',
+      displayName: 'Alberto Schiavolin',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_ssella',
+      email: 'ssella.ieu2021@student.ie.edu',
+      displayName: 'Sara Sella',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'bus271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_rsiddiqui',
+      email: 'rsiddiqui.ieu2021@student.ie.edu',
+      displayName: 'Raza Siddiqui',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_atopalovic',
+      email: 'atopalovic.ieu2021@student.ie.edu',
+      displayName: 'Aleksa Topalovic',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'cs271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_murunuela',
+      email: 'murunuela.ieu2021@student.ie.edu',
+      displayName: 'Marcos Urunuela',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_avalencia',
+      email: 'avalencia.ieu2021@student.ie.edu',
+      displayName: 'Alejandro Valencia',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'bus271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_cvelasco',
+      email: 'cvelasco.ieu2021@student.ie.edu',
+      displayName: 'Carmen Velasco',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_tyadav',
+      email: 'tyadav.ieu2021@student.ie.edu',
+      displayName: 'Tanay Yadav',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'cs271'],
+      createdAt: new Date()
+    },
+    {
+      id: 'student_etakimoto',
+      email: 'etakimoto.ieu2021@student.ie.edu',
+      displayName: 'Emilie Takimoto',
+      role: 'student',
+      major: 'Computer Science',
+      year: 3,
+      enrolledClasses: ['cs401', 'math301'],
       createdAt: new Date()
     }
   ];
-
+  
   // Create all users
   for (const user of [...professors, ...students]) {
     try {
@@ -190,89 +487,86 @@ export const seedUsers = async () => {
 
 // Seed classes
 export const seedClasses = async () => {
+  // Collect all student IDs
+  const studentIds = [
+    'student_vbarbier',
+    'student_lbrudniakber',
+    'student_ncajiao',
+    'student_rdantasmarti',
+    'student_cdecarcer',
+    'student_mroriz',
+    'student_jgarcia',
+    'student_dgrechezelko',
+    'student_tvonhabsburg',
+    'student_nkravchuk',
+    'student_clopez',
+    'student_elozoya',
+    'student_amartin',
+    'student_amasquelierp',
+    'student_imoral',
+    'student_jmorenoz',
+    'student_amory',
+    'student_rmosconikatc',
+    'student_qnguyen',
+    'student_aperin',
+    'student_mrestrepo',
+    'student_asafie',
+    'student_ssalinero',
+    'student_aschiavolin',
+    'student_ssella',
+    'student_rsiddiqui',
+    'student_atopalovic',
+    'student_murunuela',
+    'student_avalencia',
+    'student_cvelasco',
+    'student_tyadav',
+    'student_etakimoto'
+  ];
+
   const classes: Class[] = [
     {
-      id: 'cs401',
-      name: 'Data Science 401',
-      instructorId: 'prof_chen',
-      schedule: 'Mon, 2:00PM - 4:00PM',
-      description: 'Advanced topics in data science and machine learning',
-      enrolledStudents: ['student_alex', 'student_michael'],
+      id: 'conflicts101',
+      name: 'Conflicts Business and Law',
+      instructorId: 'prof_llorente',
+      schedule: 'Tue, 10:00AM - 12:00PM',
+      description: 'Study of conflicts between business interests and legal frameworks',
+      enrolledStudents: studentIds,
       subgroups: [
         {
-          id: 'cs401_sg_1',
-          name: 'Analysis Team',
-          classId: 'cs401',
-          lastMessage: 'Alex: Updated the dataset preprocessing code',
-          dueDate: '2025-10-20',
-          color: 'bg-purple-500',
-          members: ['student_alex', 'student_michael']
+          id: 'conflicts101_sg_1',
+          name: 'Research Group A',
+          classId: 'conflicts101',
+          lastMessage: 'Please check the new reading materials',
+          dueDate: '2025-04-25',
+          color: 'bg-blue-500',
+          members: studentIds.slice(0, 8) // First 8 students
         },
         {
-          id: 'cs401_sg_2',
-          name: 'Visualization Team',
-          classId: 'cs401',
-          lastMessage: 'Emma: New dashboard mockups ready for review',
-          dueDate: '2025-10-22',
+          id: 'conflicts101_sg_2',
+          name: 'Research Group B',
+          classId: 'conflicts101',
+          lastMessage: 'Case study presentation next week',
+          dueDate: '2025-04-27',
+          color: 'bg-purple-500',
+          members: studentIds.slice(8, 16) // Next 8 students
+        },
+        {
+          id: 'conflicts101_sg_3',
+          name: 'Research Group C',
+          classId: 'conflicts101',
+          lastMessage: 'Draft of final paper due soon',
+          dueDate: '2025-04-30',
           color: 'bg-green-500',
-          members: ['student_michael']
-        }
-      ]
-    },
-    {
-      id: 'math301',
-      name: 'Advanced Calculus 301',
-      instructorId: 'prof_johnson',
-      schedule: 'Tue, 10:00AM - 12:00PM',
-      description: 'Multivariable calculus and differential equations',
-      enrolledStudents: ['student_alex', 'student_emma'],
-      subgroups: [
+          members: studentIds.slice(16, 24) // Next 8 students
+        },
         {
-          id: 'math301_sg_1',
-          name: 'Homework Group A',
-          classId: 'math301',
-          lastMessage: 'Emma: I finished problems 1-5',
-          dueDate: '2025-10-25',
-          color: 'bg-blue-500',
-          members: ['student_alex', 'student_emma']
-        }
-      ]
-    },
-    {
-      id: 'cs271',
-      name: 'Software Engineering 271',
-      instructorId: 'prof_chen',
-      schedule: 'Wed, 11:00AM - 1:00PM',
-      description: 'Fundamentals of software engineering and project management',
-      enrolledStudents: ['student_michael'],
-      subgroups: [
-        {
-          id: 'cs271_sg_1',
-          name: 'Project Team Alpha',
-          classId: 'cs271',
-          lastMessage: 'Michael: PR ready for review',
-          dueDate: '2025-10-27',
+          id: 'conflicts101_sg_4',
+          name: 'Research Group D',
+          classId: 'conflicts101',
+          lastMessage: 'Meeting with professor on Thursday',
+          dueDate: '2025-05-02',
           color: 'bg-pink-500',
-          members: ['student_michael']
-        }
-      ]
-    },
-    {
-      id: 'bus271',
-      name: 'Funding 271',
-      instructorId: 'prof_morgan',
-      schedule: 'Fri, 9:30AM - 10:30AM',
-      description: 'Introduction to business funding and financial strategies',
-      enrolledStudents: ['student_alex', 'student_emma'],
-      subgroups: [
-        {
-          id: 'bus271_sg_1',
-          name: 'Group 1',
-          classId: 'bus271',
-          lastMessage: 'Emma: I\'ve submitted our report!',
-          dueDate: '2025-10-24',
-          color: 'bg-blue-500',
-          members: ['student_alex', 'student_emma']
+          members: studentIds.slice(24) // Remaining students
         }
       ]
     }
@@ -300,51 +594,68 @@ export const seedMeetings = async () => {
   // First, get the actual Firebase Auth UIDs for our users
   const usersSnapshot = await getDocs(collection(db, 'users'));
   const userMap = new Map();
+  const studentIds = [];
+  let professorId = '';
   
   usersSnapshot.forEach(doc => {
     const data = doc.data();
     if (data.email) {
-      // Map the email to the actual Firebase Auth UID
-      if (data.email === 'alex.johnson@university.edu') userMap.set('student_alex', doc.id);
-      if (data.email === 'emma.wilson@university.edu') userMap.set('student_emma', doc.id);
-      if (data.email === 'michael.brown@university.edu') userMap.set('student_michael', doc.id);
-      if (data.email === 'sarah.chen@university.edu') userMap.set('prof_chen', doc.id);
-      if (data.email === 'david.johnson@university.edu') userMap.set('prof_johnson', doc.id);
-      if (data.email === 'liam.morgan@university.edu') userMap.set('prof_morgan', doc.id);
+      // Store professor ID
+      if (data.email === 'cllorente@faculty.ie.edu') {
+        professorId = doc.id;
+        userMap.set('prof_llorente', doc.id);
+      }
+      
+      // Store all student IDs
+      if (data.email.includes('@student.ie.edu')) {
+        studentIds.push(doc.id);
+        
+        // Map a few specific students for meetings
+        if (data.email === 'vbarbier.ieu2021@student.ie.edu') userMap.set('student_vbarbier', doc.id);
+        if (data.email === 'lbrudniakber.ieu2021@student.ie.edu') userMap.set('student_lbrudniakber', doc.id);
+        if (data.email === 'ncajiao.ieu2021@student.ie.edu') userMap.set('student_ncajiao', doc.id);
+        if (data.email === 'rdantasmarti.ieu2021@student.ie.edu') userMap.set('student_rdantasmarti', doc.id);
+      }
     }
   });
 
   console.log('User ID mapping:', Object.fromEntries(userMap));
+  
+  // Skip creating meetings if professor not found
+  if (!professorId) {
+    console.error('Professor ID not found, skipping meeting creation');
+    return [];
+  }
 
   const meetings: Meeting[] = [
     {
       id: 'meeting_1',
-      studentId: userMap.get('student_alex'),
-      professorId: userMap.get('prof_chen'),
-      classId: 'cs401',
+      studentId: userMap.get('student_vbarbier'),
+      professorId: professorId,
+      classId: 'conflicts101',
       date: '2025-03-15',
       time: '14:00',
-      reason: 'Discuss project proposal',
+      reason: 'Discuss case study analysis',
       status: 'pending',
       createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) // 3 days ago
     },
     {
       id: 'meeting_2',
-      studentId: userMap.get('student_emma'),
-      professorId: userMap.get('prof_johnson'),
-      classId: 'math301',
+      studentId: userMap.get('student_lbrudniakber'),
+      professorId: professorId,
+      classId: 'conflicts101',
       date: '2025-03-18',
       time: '13:30',
-      reason: 'Career guidance discussion',
+      reason: 'Review research proposal',
       status: 'rejected',
       responseMessage: 'I have a faculty meeting at this time. Please reschedule for next week.',
       createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) // 5 days ago
     },
     {
       id: 'meeting_3',
-      studentId: userMap.get('student_michael'),
-      professorId: userMap.get('prof_chen'),
-      classId: 'cs271',
+      studentId: userMap.get('student_ncajiao'),
+      professorId: professorId,
+      classId: 'conflicts101',
       date: '2025-03-20',
       time: '15:00',
       reason: 'Discuss research methodology',
@@ -353,9 +664,9 @@ export const seedMeetings = async () => {
     },
     {
       id: 'meeting_4',
-      studentId: userMap.get('student_alex'),
-      professorId: userMap.get('prof_johnson'),
-      classId: 'math301',
+      studentId: userMap.get('student_rdantasmarti'),
+      professorId: professorId,
+      classId: 'conflicts101',
       date: '2025-03-16',
       time: '11:00',
       reason: 'Review assignment feedback',
@@ -384,30 +695,219 @@ export const seedMeetings = async () => {
 
 // Seed chat conversations and messages
 export const seedChats = async () => {
-  // Create chat conversations
-  const chats: Chat[] = [
-    {
-      id: 'chat_1',
-      participants: ['student_alex', 'prof_chen'],
+  // Get user IDs
+  const usersSnapshot = await getDocs(collection(db, 'users'));
+  const userMap = new Map<string, string>();
+  const userEmails = new Map<string, string>();
+  const userNames = new Map<string, string>();
+  const allStudentIds: string[] = [];
+  
+  usersSnapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.email) {
+      // Store the user ID, display name and map by email
+      userMap.set(data.email, doc.id);
+      userNames.set(doc.id, data.displayName);
+      
+      if (data.email === 'cllorente@faculty.ie.edu') {
+        userMap.set('prof_llorente', doc.id);
+      }
+      
+      // Collect student IDs for student-to-student chats
+      if (data.email.includes('@student.ie.edu')) {
+        allStudentIds.push(doc.id);
+        userEmails.set(doc.id, data.email);
+      }
+    }
+  });
+  
+  const professorId = userMap.get('cllorente@faculty.ie.edu') || '';
+  
+  if (!professorId || allStudentIds.length < 5) {
+    console.error('Missing user IDs for chats, skipping chat creation');
+    return { chats: [], messages: [] };
+  }
+  
+  // Create all chats
+  const chats = [];
+  const messages = [];
+  
+  // 1. Create AI chat for each student
+  for (const studentId of allStudentIds) {
+    const studentName = userNames.get(studentId) || 'Student';
+    const chatId = `ai_chat_${studentId}`;
+    
+    chats.push({
+      id: chatId,
+      participants: [studentId, 'AI_ASSISTANT'],
       lastMessage: {
-        senderId: 'student_alex',
-        text: 'Thank you for the feedback on my project proposal!',
+        senderId: 'AI_ASSISTANT',
+        text: `Hello ${studentName}, I'm Ed AI. How can I help you today?`,
         timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) // 1 day ago
       },
-      createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000) // 10 days ago
-    },
-    {
-      id: 'chat_2',
-      participants: ['student_emma', 'prof_johnson'],
-      lastMessage: {
-        senderId: 'prof_johnson',
-        text: 'Please submit your assignment by Friday.',
-        timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) // 2 days ago
-      },
-      createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000) // 15 days ago
-    }
-  ];
+      createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+      type: 'ai'
+    });
+    
+    messages.push({
+      id: `${chatId}_msg_1`,
+      chatId: chatId,
+      senderId: 'AI_ASSISTANT',
+      text: `Hello ${studentName}, I'm Ed AI. How can I help you today?`,
+      timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+      read: true
+    });
+  }
   
+  // 2. Create student-to-professor chats (at least 5)
+  const studentsForProfessorChats = allStudentIds.slice(0, 10);
+  for (let i = 0; i < studentsForProfessorChats.length; i++) {
+    const studentId = studentsForProfessorChats[i];
+    const studentName = userNames.get(studentId) || 'Student';
+    const chatId = `prof_student_${i}`;
+    const timeOffset = (i + 1) * 24 * 60 * 60 * 1000; // Different times for each chat
+    
+    chats.push({
+      id: chatId,
+      participants: [studentId, professorId],
+      lastMessage: {
+        senderId: i % 2 === 0 ? professorId : studentId,
+        text: i % 2 === 0 
+          ? `Please submit your assignment by Friday.`
+          : `Thank you for the feedback on my research proposal!`,
+        timestamp: new Date(Date.now() - timeOffset)
+      },
+      createdAt: new Date(Date.now() - (timeOffset + 5 * 24 * 60 * 60 * 1000)),
+      type: 'direct'
+    });
+    
+    // Add a few messages to each chat
+    const msgCount = Math.floor(Math.random() * 3) + 2; // 2-4 messages per chat
+    for (let j = 0; j < msgCount; j++) {
+      const isSentByProfessor = j % 2 === 0;
+      messages.push({
+        id: `${chatId}_msg_${j}`,
+        chatId: chatId,
+        senderId: isSentByProfessor ? professorId : studentId,
+        text: isSentByProfessor 
+          ? ["How is your project going?", "Please submit your assignment by Friday.", "Would you like to schedule a meeting?"][j % 3]
+          : ["I'm making good progress!", "Thank you for the feedback on my research proposal!", "Yes, I would like to schedule a meeting."][j % 3],
+        timestamp: new Date(Date.now() - timeOffset + (j * 60 * 60 * 1000)), // Spread out by hours
+        read: true
+      });
+    }
+  }
+  
+  // 3. Create student-to-student chats
+  // Create a few group chats for subgroups
+  const subgroupIds = ['conflicts101_sg_1', 'conflicts101_sg_2', 'conflicts101_sg_3', 'conflicts101_sg_4'];
+  
+  for (let i = 0; i < subgroupIds.length; i++) {
+    const subgroupId = subgroupIds[i];
+    const startIdx = i * 8;
+    const endIdx = Math.min(startIdx + 8, allStudentIds.length);
+    const subgroupStudents = allStudentIds.slice(startIdx, endIdx);
+    
+    const chatId = `group_${subgroupId}`;
+    const randomStudentIdx = Math.floor(Math.random() * subgroupStudents.length);
+    const randomStudentId = subgroupStudents[randomStudentIdx];
+    
+    if (subgroupStudents.length > 1) {
+      chats.push({
+        id: chatId,
+        participants: subgroupStudents,
+        lastMessage: {
+          senderId: randomStudentId,
+          text: ["Everyone ready for the presentation?", "I've uploaded the latest files", "Don't forget the meeting tomorrow", "Has anyone started on the case study?"][i % 4],
+          timestamp: new Date(Date.now() - (i + 1) * 12 * 60 * 60 * 1000) // Different times
+        },
+        createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000),
+        type: 'group',
+        groupName: `Research Group ${String.fromCharCode(65 + i)}`, // A, B, C, D
+        classId: 'conflicts101'
+      });
+      
+      // Add some messages to the group chat
+      for (let j = 0; j < 5; j++) {
+        const randomSenderIdx = Math.floor(Math.random() * subgroupStudents.length);
+        const senderId = subgroupStudents[randomSenderIdx];
+        
+        messages.push({
+          id: `${chatId}_msg_${j}`,
+          chatId: chatId,
+          senderId: senderId,
+          text: [
+            "Hi everyone, how's the project going?",
+            "I've added my section to the document",
+            "Can we meet tomorrow to discuss the next steps?",
+            "Has anyone found any good sources for the research?",
+            "I'm having trouble with the analysis part, can someone help?"
+          ][j],
+          timestamp: new Date(Date.now() - (i * 24 * 60 * 60 * 1000) - (j * 3 * 60 * 60 * 1000)),
+          read: j < 3 // Older messages are read
+        });
+      }
+    }
+  }
+  
+  // 4. Create some direct student-to-student chats
+  for (let i = 0; i < 15; i++) {
+    const student1Idx = Math.floor(Math.random() * allStudentIds.length);
+    let student2Idx = Math.floor(Math.random() * allStudentIds.length);
+    
+    // Make sure we don't create a chat with yourself
+    while (student2Idx === student1Idx) {
+      student2Idx = Math.floor(Math.random() * allStudentIds.length);
+    }
+    
+    const student1Id = allStudentIds[student1Idx];
+    const student2Id = allStudentIds[student2Idx];
+    
+    const chatId = `student_direct_${i}`;
+    const timeOffset = Math.floor(Math.random() * 10) * 24 * 60 * 60 * 1000;
+    
+    chats.push({
+      id: chatId,
+      participants: [student1Id, student2Id],
+      lastMessage: {
+        senderId: Math.random() > 0.5 ? student1Id : student2Id,
+        text: [
+          "See you in class tomorrow!",
+          "Thanks for your help with the assignment",
+          "Did you understand the professor's explanation?",
+          "Can you share your notes from today's lecture?",
+          "Are you going to the study group later?"
+        ][i % 5],
+        timestamp: new Date(Date.now() - timeOffset)
+      },
+      createdAt: new Date(Date.now() - (timeOffset + 15 * 24 * 60 * 60 * 1000)),
+      type: 'direct'
+    });
+    
+    // Add a few messages to each direct chat
+    const msgCount = Math.floor(Math.random() * 4) + 2; // 2-5 messages
+    for (let j = 0; j < msgCount; j++) {
+      const senderId = j % 2 === 0 ? student1Id : student2Id;
+      
+      messages.push({
+        id: `${chatId}_msg_${j}`,
+        chatId: chatId,
+        senderId: senderId,
+        text: [
+          "Hey, how's it going?",
+          "Do you have time to review my part of the project?",
+          "Are you going to the lecture tomorrow?",
+          "I found a great resource for our research",
+          "Let's meet at the library to study",
+          "Did you understand what the professor meant about the case study?"
+        ][Math.floor(Math.random() * 6)],
+        timestamp: new Date(Date.now() - timeOffset + (j * 30 * 60 * 1000)), // Spread out by 30 minutes
+        read: j < msgCount - (Math.floor(Math.random() * 2)) // Some recent messages might be unread
+      });
+    }
+  }
+  
+  // Save all chats and messages to Firestore
   for (const chat of chats) {
     await setDoc(doc(db, 'chats', chat.id), {
       ...chat,
@@ -418,77 +918,6 @@ export const seedChats = async () => {
       createdAt: Timestamp.fromDate(chat.createdAt)
     });
   }
-  
-  // Create messages
-  const messages: Message[] = [
-    // Chat 1 messages
-    {
-      id: 'msg_1_1',
-      chatId: 'chat_1',
-      senderId: 'student_alex',
-      text: 'Hello Professor, I wanted to discuss my project proposal for the data science class.',
-      timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
-      read: true
-    },
-    {
-      id: 'msg_1_2',
-      chatId: 'chat_1',
-      senderId: 'prof_chen',
-      text: 'Hi Alex, I have reviewed your proposal and have some feedback for you.',
-      timestamp: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000), // 9 days ago
-      read: true
-    },
-    {
-      id: 'msg_1_3',
-      chatId: 'chat_1',
-      senderId: 'prof_chen',
-      text: 'Your topic is interesting, but I suggest narrowing the scope a bit to make it more manageable.',
-      timestamp: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000 + 60000), // 9 days ago + 1 minute
-      read: true
-    },
-    {
-      id: 'msg_1_4',
-      chatId: 'chat_1',
-      senderId: 'student_alex',
-      text: 'Thank you for the feedback on my project proposal!',
-      timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-      read: false
-    },
-    
-    // Chat 2 messages
-    {
-      id: 'msg_2_1',
-      chatId: 'chat_2',
-      senderId: 'student_emma',
-      text: 'Professor Johnson, I have a question about the last homework assignment.',
-      timestamp: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000), // 15 days ago
-      read: true
-    },
-    {
-      id: 'msg_2_2',
-      chatId: 'chat_2',
-      senderId: 'prof_johnson',
-      text: 'What is your question, Emma?',
-      timestamp: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000), // 14 days ago
-      read: true
-    },
-    {
-      id: 'msg_2_3',
-      chatId: 'chat_2',
-      senderId: 'student_emma',
-      text: 'I am having trouble with problem 5. Could you provide some hints on how to approach it?',
-      timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-      read: true
-    },
-    {
-      id: 'msg_2_4',
-      chatId: 'chat_2',
-      senderId: 'prof_johnson',
-      text: 'Please submit your assignment by Friday.',
-      timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-      read: false
-    }
-  ];
   
   for (const message of messages) {
     await setDoc(doc(db, 'messages', message.id), {
@@ -507,12 +936,48 @@ export const seedChats = async () => {
 
 // Seed notifications
 export const seedNotifications = async () => {
+  // Get user IDs
+  const usersSnapshot = await getDocs(collection(db, 'users'));
+  const userMap = new Map();
+  
+  usersSnapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.email) {
+      if (data.email === 'cllorente@faculty.ie.edu') {
+        userMap.set('prof_llorente', doc.id);
+      }
+      if (data.email === 'vbarbier.ieu2021@student.ie.edu') {
+        userMap.set('student_vbarbier', doc.id);
+      }
+      if (data.email === 'lbrudniakber.ieu2021@student.ie.edu') {
+        userMap.set('student_lbrudniakber', doc.id);
+      }
+      if (data.email === 'ncajiao.ieu2021@student.ie.edu') {
+        userMap.set('student_ncajiao', doc.id);
+      }
+      if (data.email === 'rdantasmarti.ieu2021@student.ie.edu') {
+        userMap.set('student_rdantasmarti', doc.id);
+      }
+    }
+  });
+  
+  const professorId = userMap.get('prof_llorente') || '';
+  const student1Id = userMap.get('student_vbarbier') || '';
+  const student2Id = userMap.get('student_lbrudniakber') || '';
+  const student3Id = userMap.get('student_ncajiao') || '';
+  const student4Id = userMap.get('student_rdantasmarti') || '';
+  
+  if (!professorId || !student1Id || !student2Id || !student3Id || !student4Id) {
+    console.error('Missing user IDs for notifications, skipping notification creation');
+    return [];
+  }
+  
   const notifications: Notification[] = [
     {
       id: 'notif_1',
-      userId: 'student_alex',
+      userId: student4Id,
       title: 'Meeting Request Status',
-      message: 'Professor Johnson has accepted your meeting request.',
+      message: 'Professor Llorente has accepted your meeting request.',
       read: false,
       type: 'meeting',
       relatedId: 'meeting_4',
@@ -520,9 +985,9 @@ export const seedNotifications = async () => {
     },
     {
       id: 'notif_2',
-      userId: 'student_emma',
+      userId: student2Id,
       title: 'Meeting Request Status',
-      message: 'Professor Johnson has rejected your meeting request. Please reschedule.',
+      message: 'Professor Llorente has rejected your meeting request. Please reschedule.',
       read: true,
       type: 'meeting',
       relatedId: 'meeting_2',
@@ -530,19 +995,19 @@ export const seedNotifications = async () => {
     },
     {
       id: 'notif_3',
-      userId: 'student_michael',
+      userId: student3Id,
       title: 'New Assignment',
-      message: 'A new assignment has been posted in Software Engineering 271.',
+      message: 'A new assignment has been posted in Conflicts Business and Law.',
       read: false,
       type: 'class',
-      relatedId: 'cs271',
+      relatedId: 'conflicts101',
       timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) // 1 day ago
     },
     {
       id: 'notif_4',
-      userId: 'student_alex',
+      userId: student1Id,
       title: 'New Message',
-      message: 'You have a new message from Professor Chen.',
+      message: 'You have a new message from Professor Llorente.',
       read: false,
       type: 'chat',
       relatedId: 'chat_1',
@@ -550,9 +1015,9 @@ export const seedNotifications = async () => {
     },
     {
       id: 'notif_5',
-      userId: 'prof_chen',
+      userId: professorId,
       title: 'New Meeting Request',
-      message: 'Alex Johnson has requested a meeting.',
+      message: 'Victor Barbier has requested a meeting.',
       read: true,
       type: 'meeting',
       relatedId: 'meeting_1',
@@ -560,9 +1025,9 @@ export const seedNotifications = async () => {
     },
     {
       id: 'notif_6',
-      userId: 'prof_chen',
+      userId: professorId,
       title: 'New Meeting Request',
-      message: 'Michael Brown has requested a meeting.',
+      message: 'Nicolas Cajiao has requested a meeting.',
       read: false,
       type: 'meeting',
       relatedId: 'meeting_3',

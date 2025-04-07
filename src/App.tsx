@@ -14,6 +14,7 @@ import Chats from './pages/Chats';
 import ChatConversation from './pages/ChatConversation';
 import Notifications from './pages/Notifications';
 import { MeetingsProvider } from './contexts/MeetingsContext';
+import { ChatProvider } from './contexts/ChatContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { initializeApp } from './utils/initializeApp';
 
@@ -126,105 +127,107 @@ function AppContent() {
 
   return (
     <MeetingsProvider>
-      <Router>
-        <Layout theme={theme} onThemeToggle={toggleTheme}>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            
-            {/* Student Routes */}
-            <Route 
-              path="/home" 
-              element={
-                <ProtectedRoute requiredRole="student">
-                  <Home />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/calendar" 
-              element={
-                <ProtectedRoute requiredRole="student">
-                  <Calendar />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/meetings" 
-              element={
-                <ProtectedRoute requiredRole="student">
-                  <Meetings />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/chats" 
-              element={
-                <ProtectedRoute requiredRole="student">
-                  <Chats />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/chats/:chatId" 
-              element={
-                <ProtectedRoute requiredRole="student">
-                  <ChatConversation />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/notifications" 
-              element={
-                <ProtectedRoute requiredRole="student">
-                  <Notifications />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/profile" 
-              element={
-                <ProtectedRoute requiredRole="student">
-                  <Profile />
-                </ProtectedRoute>
-              } 
-            />
-            
-            {/* Professor Routes */}
-            <Route 
-              path="/professor/home" 
-              element={
-                <ProtectedRoute requiredRole="professor">
-                  <ProfessorHome />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/professor/calendar" 
-              element={
-                <ProtectedRoute requiredRole="professor">
-                  <ProfessorCalendar />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/professor/meetings" 
-              element={
-                <ProtectedRoute requiredRole="professor">
-                  <ProfessorMeetings />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/professor/profile" 
-              element={
-                <ProtectedRoute requiredRole="professor">
-                  <ProfessorProfile />
-                </ProtectedRoute>
-              } 
-            />
-          </Routes>
-        </Layout>
-      </Router>
+      <ChatProvider>
+        <Router>
+          <Layout theme={theme} onThemeToggle={toggleTheme}>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              
+              {/* Student Routes */}
+              <Route 
+                path="/home" 
+                element={
+                  <ProtectedRoute requiredRole="student">
+                    <Home />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/calendar" 
+                element={
+                  <ProtectedRoute requiredRole="student">
+                    <Calendar />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/meetings" 
+                element={
+                  <ProtectedRoute requiredRole="student">
+                    <Meetings />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/chats" 
+                element={
+                  <ProtectedRoute requiredRole="student">
+                    <Chats />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/chats/:chatId" 
+                element={
+                  <ProtectedRoute requiredRole="student">
+                    <ChatConversation />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/notifications" 
+                element={
+                  <ProtectedRoute requiredRole="student">
+                    <Notifications />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/profile" 
+                element={
+                  <ProtectedRoute requiredRole="student">
+                    <Profile />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* Professor Routes */}
+              <Route 
+                path="/professor/home" 
+                element={
+                  <ProtectedRoute requiredRole="professor">
+                    <ProfessorHome />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/professor/calendar" 
+                element={
+                  <ProtectedRoute requiredRole="professor">
+                    <ProfessorCalendar />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/professor/meetings" 
+                element={
+                  <ProtectedRoute requiredRole="professor">
+                    <ProfessorMeetings />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/professor/profile" 
+                element={
+                  <ProtectedRoute requiredRole="professor">
+                    <ProfessorProfile />
+                  </ProtectedRoute>
+                } 
+              />
+            </Routes>
+          </Layout>
+        </Router>
+      </ChatProvider>
     </MeetingsProvider>
   );
 }
