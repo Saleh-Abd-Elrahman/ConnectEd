@@ -4,17 +4,21 @@ import { Clock, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
 import { useMeetings } from '../contexts/MeetingsContext';
 import { MeetingStatus } from '../models/types';
 import { useAuth } from '../contexts/AuthContext';
+import { useClasses } from '../contexts/ClassContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 // Cache for professor names to avoid repeated fetches
 const professorNameCache = new Map<string, string>();
+const classNameCache = new Map<string, string>();
 
 function Meetings() {
   const navigate = useNavigate();
   const { meetings, loading, error, refreshMeetings } = useMeetings();
   const { currentUser } = useAuth();
+  const { classes } = useClasses();
   const [professorNames, setProfessorNames] = useState<{ [key: string]: string }>({});
+  const [classNames, setClassNames] = useState<{ [key: string]: string }>({});
 
   // Fetch professor names when meetings change
   useEffect(() => {
@@ -51,6 +55,57 @@ function Meetings() {
       fetchProfessorNames();
     }
   }, [meetings]);
+
+  // Get class names
+  useEffect(() => {
+    const fetchClassNames = async () => {
+      const newClassNames: { [key: string]: string } = {};
+      
+      for (const meeting of meetings) {
+        // Skip if classId is undefined
+        if (!meeting.classId) {
+          newClassNames[meeting.id] = '';
+          continue;
+        }
+
+        // First check if we have the class in the classes context
+        const classFromContext = classes.find(c => c.id === meeting.classId);
+        if (classFromContext) {
+          newClassNames[meeting.id] = classFromContext.name;
+          classNameCache.set(meeting.classId, classFromContext.name);
+          continue;
+        }
+
+        // If not in context, check the cache
+        if (classNameCache.has(meeting.classId)) {
+          newClassNames[meeting.id] = classNameCache.get(meeting.classId) || '';
+          continue;
+        }
+
+        // If not in cache, fetch from Firestore
+        try {
+          const classDoc = await getDoc(doc(db, 'classes', meeting.classId));
+          if (classDoc.exists()) {
+            const classData = classDoc.data();
+            const name = classData.name || 'Unknown Class';
+            classNameCache.set(meeting.classId, name);
+            newClassNames[meeting.id] = name;
+          } else {
+            newClassNames[meeting.id] = '';
+          }
+        } catch (error) {
+          console.error('Error fetching class name:', error);
+          newClassNames[meeting.id] = '';
+        }
+      }
+      
+      setClassNames(newClassNames);
+    };
+
+    if (meetings.length > 0) {
+      fetchClassNames();
+    }
+  }, [meetings, classes]);
 
   useEffect(() => {
     // Debug logging
@@ -181,6 +236,11 @@ function Meetings() {
                     <h3 className="font-medium dark:text-white">
                       {meeting.professorId ? (professorNames[meeting.professorId] || 'Loading...') : 'No Professor Assigned'}
                     </h3>
+                    {classNames[meeting.id] && (
+                      <p className="text-sm text-blue-500 dark:text-blue-400">
+                        {classNames[meeting.id]}
+                      </p>
+                    )}
                     <div className="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
                       <p>Date: {formatDate(meeting.date)}</p>
                       <p>Time: {formatTime(meeting.time)}</p>

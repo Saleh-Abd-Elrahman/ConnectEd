@@ -26,7 +26,7 @@ const doesDocExist = async (collectionName: string, docId: string): Promise<bool
 };
 
 // Initialize the application by checking database state and seeding if necessary
-export const initializeApp = async (): Promise<void> => {
+export const initializeApp = async (shouldSeedDatabase: boolean = false): Promise<void> => {
   try {
     console.log('Checking database state...');
     
@@ -59,7 +59,9 @@ export const initializeApp = async (): Promise<void> => {
       // Continue with seeding even if checks fail
     }
     
-    if (isUsersEmpty || isClassesEmpty || !studentExists || !professorExists || !classExists) {
+    const needsSeeding = isUsersEmpty || isClassesEmpty || !studentExists || !professorExists || !classExists;
+    
+    if (needsSeeding && shouldSeedDatabase) {
       console.log('Database needs initialization. Starting seeding process...');
       try {
         await seedAll();
@@ -68,6 +70,8 @@ export const initializeApp = async (): Promise<void> => {
         console.error('Error during database seeding:', seedError);
         return Promise.reject(new Error('Failed to seed database. Check console for details.'));
       }
+    } else if (needsSeeding) {
+      console.log('Database needs initialization but seeding is disabled.');
     } else {
       console.log('Database already initialized!');
     }

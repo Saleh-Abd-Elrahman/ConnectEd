@@ -191,9 +191,6 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (!activeChat) return;
     
-    // If we already have messages for this chat, don't re-fetch
-    if (messages[activeChat.id]?.length > 0) return;
-    
     const messagesQuery = query(
       collection(db, 'messages'),
       where('chatId', '==', activeChat.id),
@@ -222,7 +219,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
     
     return () => unsubscribe();
-  }, [activeChat, messages]);
+  }, [activeChat]);
   
   // Mark messages as read when they're displayed
   useEffect(() => {

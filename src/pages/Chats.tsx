@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useMeetings } from '../contexts/MeetingsContext';
 import { useChat } from '../contexts/ChatContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useClasses } from '../contexts/ClassContext';
 import { formatDistanceToNow } from 'date-fns';
 import { Chat, ChatMessage, UserInfo } from '../contexts/ChatContext';
+import { Class } from '../models/types';
 
 // Sample data for online users
 const onlineUsers = [
@@ -89,6 +91,7 @@ function Chats() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { chats, userInfoMap, activeUsers, isUserOnline, createChat, setActiveChat, messages } = useChat();
+  const { classes } = useClasses();
   const [searchQuery, setSearchQuery] = useState('');
   const [showMeetingModal, setShowMeetingModal] = useState(false);
   const [showNewChatModal, setShowNewChatModal] = useState(false);
@@ -97,7 +100,53 @@ function Chats() {
   const [meetingDate, setMeetingDate] = useState('');
   const [meetingTime, setMeetingTime] = useState('');
   const [meetingReason, setMeetingReason] = useState('');
+  const [selectedClass, setSelectedClass] = useState('');
+  const [recipientSearchQuery, setRecipientSearchQuery] = useState('');
   const { addMeeting } = useMeetings();
+
+  // For chat recipients filtering
+  const [classUsers, setClassUsers] = useState<UserInfo[]>([]);
+
+  // Update class users when selected class changes
+  useEffect(() => {
+    if (!selectedClass) {
+      setClassUsers([]);
+      return;
+    }
+
+    const selectedClassData = classes.find(c => c.id === selectedClass);
+    if (!selectedClassData) {
+      setClassUsers([]);
+      return;
+    }
+
+    // Get all users in this class
+    const users: UserInfo[] = [];
+    
+    // Add instructor
+    const instructor = userInfoMap[selectedClassData.instructorId];
+    if (instructor && instructor.id !== currentUser?.id) {
+      users.push(instructor);
+    }
+    
+    // Add students
+    if (selectedClassData.enrolledStudents) {
+      selectedClassData.enrolledStudents.forEach(studentId => {
+        const student = userInfoMap[studentId];
+        if (student && student.id !== currentUser?.id) {
+          users.push(student);
+        }
+      });
+    }
+    
+    setClassUsers(users);
+  }, [selectedClass, classes, userInfoMap, currentUser]);
+
+  // Filter class users by search query
+  const filteredClassUsers = recipientSearchQuery.trim()
+    ? classUsers.filter(user => 
+        user.displayName.toLowerCase().includes(recipientSearchQuery.toLowerCase()))
+    : classUsers;
 
   const filteredChats = searchQuery.trim() 
     ? chats.filter(chat => {
@@ -129,6 +178,27 @@ function Chats() {
     .filter(user => user.role === 'student' && user.id !== currentUser?.id)
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
+  // Filter professors based on shared classes
+  const classInstructors = React.useMemo(() => {
+    if (!currentUser || currentUser.role !== 'student' || !classes.length) {
+      return [];
+    }
+
+    // Get all unique instructor IDs from classes the student is enrolled in
+    const instructorIds = new Set<string>();
+    
+    classes.forEach(classItem => {
+      if (classItem.instructorId) {
+        instructorIds.add(classItem.instructorId);
+      }
+    });
+    
+    // Get the actual professor objects
+    return Object.values(userInfoMap)
+      .filter(user => user.role === 'professor' && instructorIds.has(user.id))
+      .sort((a, b) => a.displayName.localeCompare(b.displayName));
+  }, [currentUser, classes, userInfoMap]);
+
   const handleRequestMeeting = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -137,12 +207,23 @@ function Chats() {
       return;
     }
     
+    // Get the class ID for the selected professor
+    let classId = '';
+    if (selectedProfessor) {
+      // Find a class where this professor is the instructor
+      const classWithProfessor = classes.find(c => c.instructorId === selectedProfessor);
+      if (classWithProfessor) {
+        classId = classWithProfessor.id;
+      }
+    }
+    
     addMeeting({
       professorId: selectedProfessor,
       studentId: currentUser.id,
       date: meetingDate,
       time: meetingTime,
-      reason: meetingReason
+      reason: meetingReason,
+      classId
     });
 
     setShowMeetingModal(false);
@@ -165,9 +246,9 @@ function Chats() {
     if (selectedProfessor === 'AI_ASSISTANT') {
       recipientId = 'AI_ASSISTANT';
       chatType = 'ai';
-    } else if (currentUser?.role === 'student') {
+    } else if (selectedProfessor) {
       recipientId = selectedProfessor; // Professor ID
-    } else {
+    } else if (selectedStudent) {
       recipientId = selectedStudent; // Student ID
     }
     
@@ -178,6 +259,8 @@ function Chats() {
       setShowNewChatModal(false);
       setSelectedProfessor('');
       setSelectedStudent('');
+      setSelectedClass('');
+      setRecipientSearchQuery('');
       
       // Navigate to the new chat
       navigate(`/chats/${chatId}`);
@@ -401,19 +484,43 @@ function Chats() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Professor
                 </label>
-                <select
-                  value={selectedProfessor}
-                  onChange={(e) => setSelectedProfessor(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-900 dark:text-white"
-                >
-                  <option value="">Select a professor</option>
-                  {professors.map(prof => (
-                    <option key={prof.id} value={prof.id}>
-                      {prof.displayName}
-                    </option>
-                  ))}
-                </select>
+                <div className="max-h-60 overflow-y-auto border dark:border-gray-700 rounded-md mb-4">
+                  {classInstructors.length === 0 ? (
+                    <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                      No professors found in your classes
+                    </div>
+                  ) : (
+                    classInstructors.map(prof => (
+                      <div 
+                        key={prof.id}
+                        onClick={() => setSelectedProfessor(prof.id)}
+                        className={`flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${
+                          selectedProfessor === prof.id
+                            ? 'bg-blue-50 dark:bg-blue-900/20'
+                            : ''
+                        }`}
+                      >
+                        {prof.photoURL ? (
+                          <img 
+                            src={prof.photoURL}
+                            alt={prof.displayName}
+                            className="w-10 h-10 rounded-full object-cover mr-3"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white mr-3">
+                            {prof.displayName.charAt(0)}
+                          </div>
+                        )}
+                        <div>
+                          <p className="font-medium dark:text-white">{prof.displayName}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            Professor
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -456,7 +563,8 @@ function Chats() {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#00A3FF] text-white rounded-md hover:bg-blue-600"
+                  disabled={!selectedProfessor}
+                  className="px-4 py-2 bg-[#00A3FF] text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   Request Meeting
                 </button>
@@ -480,7 +588,131 @@ function Chats() {
               </button>
             </div>
             <form onSubmit={handleCreateNewChat} className="p-4 space-y-4">
-              {currentUser?.role === 'student' ? (
+              {/* Option to chat with AI */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Chat with AI
+                </label>
+                <div className="flex mb-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedProfessor('AI_ASSISTANT');
+                      setSelectedStudent('');
+                      setSelectedClass('');
+                    }}
+                    className={`px-4 py-2 rounded-md w-full ${
+                      selectedProfessor === 'AI_ASSISTANT' 
+                        ? 'bg-purple-500 text-white' 
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                    }`}
+                  >
+                    Ed AI Assistant
+                  </button>
+                </div>
+              </div>
+
+              {/* Line separator */}
+              <div className="relative flex items-center">
+                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+                <span className="flex-shrink mx-4 text-gray-500 dark:text-gray-400">OR</span>
+                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+              </div>
+
+              {/* Filter by class */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Select Class
+                </label>
+                <select
+                  value={selectedClass}
+                  onChange={(e) => {
+                    setSelectedClass(e.target.value);
+                    setSelectedProfessor('');
+                    setSelectedStudent('');
+                  }}
+                  className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-900 dark:text-white"
+                >
+                  <option value="">All Contacts</option>
+                  {classes.map((classItem: Class) => (
+                    <option key={classItem.id} value={classItem.id}>
+                      {classItem.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Search for recipient */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Search
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search by name"
+                    value={recipientSearchQuery}
+                    onChange={(e) => setRecipientSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-900 dark:text-white"
+                  />
+                </div>
+              </div>
+
+              {/* User list from selected class */}
+              {selectedClass && (
+                <div className="max-h-60 overflow-y-auto border dark:border-gray-700 rounded-md">
+                  {filteredClassUsers.length === 0 ? (
+                    <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                      No users found in this class
+                    </div>
+                  ) : (
+                    filteredClassUsers.map(user => (
+                      <div 
+                        key={user.id}
+                        onClick={() => {
+                          if (user.role === 'professor') {
+                            setSelectedProfessor(user.id);
+                            setSelectedStudent('');
+                          } else {
+                            setSelectedStudent(user.id);
+                            setSelectedProfessor('');
+                          }
+                        }}
+                        className={`flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${
+                          (user.role === 'professor' && selectedProfessor === user.id) || 
+                          (user.role === 'student' && selectedStudent === user.id)
+                            ? 'bg-blue-50 dark:bg-blue-900/20'
+                            : ''
+                        }`}
+                      >
+                        {user.photoURL ? (
+                          <img 
+                            src={user.photoURL}
+                            alt={user.displayName}
+                            className="w-10 h-10 rounded-full object-cover mr-3"
+                          />
+                        ) : (
+                          <div className={`w-10 h-10 ${
+                            user.role === 'professor' ? 'bg-blue-500' : 'bg-orange-400'
+                          } rounded-full flex items-center justify-center text-white mr-3`}>
+                            {user.displayName.charAt(0)}
+                          </div>
+                        )}
+                        <div>
+                          <p className="font-medium dark:text-white">{user.displayName}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {user.role === 'professor' ? 'Professor' : 'Student'}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+
+              {/* If no class is selected, show traditional dropdowns */}
+              {!selectedClass && currentUser?.role === 'student' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Chat with
@@ -488,11 +720,10 @@ function Chats() {
                   <select
                     value={selectedProfessor}
                     onChange={(e) => setSelectedProfessor(e.target.value)}
-                    required
+                    required={!selectedClass}
                     className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-900 dark:text-white"
                   >
                     <option value="">Select a recipient</option>
-                    <option value="AI_ASSISTANT">Ed AI Assistant</option>
                     {professors.map(prof => (
                       <option key={prof.id} value={prof.id}>
                         {prof.displayName}
@@ -500,7 +731,9 @@ function Chats() {
                     ))}
                   </select>
                 </div>
-              ) : (
+              )}
+
+              {!selectedClass && currentUser?.role === 'professor' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Student
@@ -508,7 +741,7 @@ function Chats() {
                   <select
                     value={selectedStudent}
                     onChange={(e) => setSelectedStudent(e.target.value)}
-                    required
+                    required={!selectedClass}
                     className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-900 dark:text-white"
                   >
                     <option value="">Select a student</option>
@@ -520,10 +753,12 @@ function Chats() {
                   </select>
                 </div>
               )}
+
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                  disabled={!(selectedProfessor || selectedStudent)}
+                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   Start Chat
                 </button>

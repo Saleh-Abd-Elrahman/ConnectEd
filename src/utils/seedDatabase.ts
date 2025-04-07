@@ -110,7 +110,7 @@ export const seedUsers = async () => {
       role: 'professor',
       department: 'Computer Science',
       officeHours: 'Mondays 3-5pm, Thursdays 2-4pm',
-      teachingClasses: ['cs401', 'cs271', 'math301', 'bus271'],
+      teachingClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     }
   ];
@@ -124,7 +124,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301', 'bus271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -134,7 +134,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -144,7 +144,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'cs271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -154,7 +154,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -164,7 +164,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'bus271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -174,7 +174,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -184,7 +184,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs271', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -194,7 +194,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -204,7 +204,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'bus271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -214,7 +214,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -224,7 +224,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'cs271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -234,7 +234,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -244,7 +244,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'bus271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -254,7 +254,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -264,7 +264,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'cs271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -274,7 +274,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -284,7 +284,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'bus271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -294,7 +294,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -304,7 +304,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'cs271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -314,7 +314,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -324,7 +324,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'bus271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -334,7 +334,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -344,7 +344,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'cs271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -354,7 +354,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -364,7 +364,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'bus271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -374,7 +374,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -384,7 +384,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'cs271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -394,7 +394,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -404,7 +404,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'bus271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -414,7 +414,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -424,7 +424,7 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'cs271'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     },
     {
@@ -434,103 +434,221 @@ export const seedUsers = async () => {
       role: 'student',
       major: 'Computer Science',
       year: 3,
-      enrolledClasses: ['cs401', 'math301'],
+      enrolledClasses: ['conflicts101'], // Only the conflicts class
       createdAt: new Date()
     }
   ];
   
-  // Create all users
-  for (const user of [...professors, ...students]) {
-    try {
-      // Try to create Auth account
-      let userCredential;
+  // Process users
+  try {
+    // Get existing users first
+    const usersSnapshot = await getDocs(collection(db, 'users'));
+    const existingUserEmails = new Set();
+    
+    usersSnapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.email) {
+        existingUserEmails.add(data.email);
+      }
+    });
+
+    // Create user accounts with delays to avoid rate limiting
+    for (const professor of professors) {
       try {
-        userCredential = await createUserWithEmailAndPassword(
-          auth,
-          user.email,
-          defaultPassword
-        );
-        console.log(`Created Auth account for ${user.email}`);
-      } catch (error: any) {
-        if (error.code === 'auth/email-already-in-use') {
-          // Get existing user data
-          const usersSnapshot = await getDocs(collection(db, 'users'));
-          const existingUser = usersSnapshot.docs.find(doc => doc.data().email === user.email);
-          if (existingUser) {
-            userMap.set(user.id, existingUser.id);
-            console.log(`Found existing user ${user.email} with ID ${existingUser.id}`);
-            continue;
+        // Skip if already exists
+        if (existingUserEmails.has(professor.email)) {
+          console.log(`User ${professor.email} already exists, skipping...`);
+          // Try to get the UID for mapping
+          try {
+            const userRecord = await signInWithEmailAndPassword(auth, professor.email, defaultPassword);
+            const uid = userRecord.user.uid;
+            userMap.set(professor.id, uid);
+            userMap.set(professor.email, uid);
+          } catch (signInError) {
+            console.error(`Error getting UID for existing user ${professor.email}:`, signInError);
           }
+          continue;
         }
-        console.error(`Error creating user ${user.email}:`, error);
-        continue;
+
+        // Create the auth account first to get the UID
+        const userCredential = await createUserWithEmailAndPassword(auth, professor.email, defaultPassword);
+        const uid = userCredential.user.uid;
+        
+        console.log(`Created Auth account for ${professor.email}`);
+        
+        // Save the Firestore document with the auth UID as the document ID
+        await setDoc(doc(db, 'users', uid), {
+          ...professor,
+          id: uid, // Use the Auth UID as the ID
+          createdAt: serverTimestamp()
+        });
+        
+        console.log(`Created Firestore document for ${professor.email}`);
+        
+        // Map the professor ID to the actual UID
+        userMap.set(professor.id, uid);
+        userMap.set(professor.email, uid);
+      } catch (error) {
+        // If the user already exists in Auth but not in Firestore, handle appropriately
+        if ((error as any).code === 'auth/email-already-in-use') {
+          console.log(`Auth account for ${professor.email} already exists`);
+          
+          // Get the UID for this email
+          try {
+            const userRecord = await signInWithEmailAndPassword(auth, professor.email, defaultPassword);
+            const uid = userRecord.user.uid;
+            
+            // Create the Firestore document with this UID
+            await setDoc(doc(db, 'users', uid), {
+              ...professor,
+              id: uid, // Use the Auth UID as the ID
+              createdAt: serverTimestamp()
+            });
+            
+            console.log(`Created Firestore document for existing auth user ${professor.email}`);
+            
+            // Map the professor ID to the actual UID
+            userMap.set(professor.id, uid);
+            userMap.set(professor.email, uid);
+          } catch (signInError) {
+            console.error(`Error getting UID for ${professor.email}:`, signInError);
+          }
+        } else {
+          console.error(`Error creating user ${professor.email}:`, error);
+        }
       }
       
-      // Store the mapping of old ID to Firebase Auth UID
-      userMap.set(user.id, userCredential.user.uid);
-      
-      // Create Firestore document
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
-        ...user,
-        id: userCredential.user.uid,
-        createdAt: serverTimestamp()
-      });
-      console.log(`Created Firestore document for ${user.email}`);
-    } catch (error) {
-      console.error(`Error creating user ${user.email}:`, error);
+      // Add delay between creating users to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
+
+    // Process students with delay to avoid rate limiting
+    for (const student of students) {
+      try {
+        // Skip if already exists
+        if (existingUserEmails.has(student.email)) {
+          console.log(`User ${student.email} already exists, skipping...`);
+          // Try to get the UID for mapping
+          try {
+            const userRecord = await signInWithEmailAndPassword(auth, student.email, defaultPassword);
+            const uid = userRecord.user.uid;
+            userMap.set(student.id, uid);
+            userMap.set(student.email, uid);
+          } catch (signInError) {
+            console.error(`Error getting UID for existing user ${student.email}:`, signInError);
+          }
+          continue;
+        }
+
+        // Create the auth account first to get the UID
+        const userCredential = await createUserWithEmailAndPassword(auth, student.email, defaultPassword);
+        const uid = userCredential.user.uid;
+        
+        console.log(`Created Auth account for ${student.email}`);
+        
+        // Save the Firestore document with the auth UID as the document ID
+        await setDoc(doc(db, 'users', uid), {
+          ...student,
+          id: uid, // Use the Auth UID as the ID
+          createdAt: serverTimestamp()
+        });
+        
+        console.log(`Created Firestore document for ${student.email}`);
+        
+        // Map the student ID to the actual UID
+        userMap.set(student.id, uid);
+        userMap.set(student.email, uid);
+      } catch (error) {
+        // If the user already exists in Auth but not in Firestore, handle appropriately
+        if ((error as any).code === 'auth/email-already-in-use') {
+          console.log(`Auth account for ${student.email} already exists`);
+          
+          // Get the UID for this email
+          try {
+            const userRecord = await signInWithEmailAndPassword(auth, student.email, defaultPassword);
+            const uid = userRecord.user.uid;
+            
+            // Create the Firestore document with this UID
+            await setDoc(doc(db, 'users', uid), {
+              ...student,
+              id: uid, // Use the Auth UID as the ID
+              createdAt: serverTimestamp()
+            });
+            
+            console.log(`Created Firestore document for existing auth user ${student.email}`);
+            
+            // Map the student ID to the actual UID
+            userMap.set(student.id, uid);
+            userMap.set(student.email, uid);
+          } catch (signInError) {
+            console.error(`Error getting UID for ${student.email}:`, signInError);
+          }
+        } else {
+          console.error(`Error creating user ${student.email}:`, error);
+        }
+      }
+      
+      // Add delay between creating users to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+
+    console.log('Users seeded successfully');
+    return userMap;
+  } catch (error) {
+    console.error('Error seeding users:', error);
+    throw error;
   }
-  
-  console.log('Users seeded successfully');
-  return userMap;
 };
 
 // Seed classes
-export const seedClasses = async () => {
-  // Collect all student IDs
-  const studentIds = [
-    'student_vbarbier',
-    'student_lbrudniakber',
-    'student_ncajiao',
-    'student_rdantasmarti',
-    'student_cdecarcer',
-    'student_mroriz',
-    'student_jgarcia',
-    'student_dgrechezelko',
-    'student_tvonhabsburg',
-    'student_nkravchuk',
-    'student_clopez',
-    'student_elozoya',
-    'student_amartin',
-    'student_amasquelierp',
-    'student_imoral',
-    'student_jmorenoz',
-    'student_amory',
-    'student_rmosconikatc',
-    'student_qnguyen',
-    'student_aperin',
-    'student_mrestrepo',
-    'student_asafie',
-    'student_ssalinero',
-    'student_aschiavolin',
-    'student_ssella',
-    'student_rsiddiqui',
-    'student_atopalovic',
-    'student_murunuela',
-    'student_avalencia',
-    'student_cvelasco',
-    'student_tyadav',
-    'student_etakimoto'
-  ];
+export const seedClasses = async (userMap?: Map<string, string>) => {
+  // First, get the actual Firebase Auth UIDs for our students
+  const studentIds: string[] = [];
+  const usersSnapshot = await getDocs(collection(db, 'users'));
+  
+  // Initialize userMap
+  let validUserMap = userMap || new Map<string, string>();
+  
+  // If we don't have a userMap from seedUsers, populate it
+  if (!userMap) {
+    usersSnapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.email) {
+        if (data.email === 'cllorente@faculty.ie.edu') {
+          validUserMap.set('prof_llorente', doc.id);
+        }
+        
+        if (data.email.includes('@student.ie.edu')) {
+          studentIds.push(doc.id);
+        }
+      }
+    });
+  } else {
+    // We have a userMap, extract student IDs from it
+    usersSnapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.email && data.email.includes('@student.ie.edu')) {
+        studentIds.push(doc.id);
+      }
+    });
+  }
+  
+  console.log(`Found ${studentIds.length} students for class enrollment`);
+  
+  // Get professor ID
+  const professorId = validUserMap.get('prof_llorente') || '';
+  if (!professorId) {
+    console.error('Professor ID not found, using placeholder');
+  }
 
   const classes: Class[] = [
     {
       id: 'conflicts101',
       name: 'Conflicts Business and Law',
-      instructorId: 'prof_llorente',
+      instructorId: professorId || 'prof_llorente',
       schedule: 'Tue, 10:00AM - 12:00PM',
       description: 'Study of conflicts between business interests and legal frameworks',
-      enrolledStudents: studentIds,
+      enrolledStudents: studentIds, // Use actual Firebase UIDs
       subgroups: [
         {
           id: 'conflicts101_sg_1',
@@ -539,7 +657,7 @@ export const seedClasses = async () => {
           lastMessage: 'Please check the new reading materials',
           dueDate: '2025-04-25',
           color: 'bg-blue-500',
-          members: studentIds.slice(0, 8) // First 8 students
+          members: studentIds.slice(0, Math.min(8, studentIds.length)) // First 8 students
         },
         {
           id: 'conflicts101_sg_2',
@@ -548,7 +666,7 @@ export const seedClasses = async () => {
           lastMessage: 'Case study presentation next week',
           dueDate: '2025-04-27',
           color: 'bg-purple-500',
-          members: studentIds.slice(8, 16) // Next 8 students
+          members: studentIds.slice(Math.min(8, studentIds.length), Math.min(16, studentIds.length)) // Next 8 students
         },
         {
           id: 'conflicts101_sg_3',
@@ -557,7 +675,7 @@ export const seedClasses = async () => {
           lastMessage: 'Draft of final paper due soon',
           dueDate: '2025-04-30',
           color: 'bg-green-500',
-          members: studentIds.slice(16, 24) // Next 8 students
+          members: studentIds.slice(Math.min(16, studentIds.length), Math.min(24, studentIds.length)) // Next 8 students
         },
         {
           id: 'conflicts101_sg_4',
@@ -566,7 +684,7 @@ export const seedClasses = async () => {
           lastMessage: 'Meeting with professor on Thursday',
           dueDate: '2025-05-02',
           color: 'bg-pink-500',
-          members: studentIds.slice(24) // Remaining students
+          members: studentIds.slice(Math.min(24, studentIds.length)) // Remaining students
         }
       ]
     }
@@ -1055,7 +1173,7 @@ export const seedAll = async () => {
   await clearDatabase();
   
   const userMap = await seedUsers();
-  const classes = await seedClasses();
+  const classes = await seedClasses(userMap);
   const meetings = await seedMeetings();
   const { chats, messages } = await seedChats();
   const notifications = await seedNotifications();
