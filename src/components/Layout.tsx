@@ -26,6 +26,7 @@ function Layout({ children, theme, onThemeToggle }: LayoutProps) {
       if (location.pathname === '/professor/calendar') return 'Calendar';
       if (location.pathname === '/professor/meetings') return 'Meeting Requests';
       if (location.pathname === '/professor/profile') return 'Profile';
+      if (location.pathname === '/professor/chats') return 'Chats';
     } else {
       if (location.pathname === '/home') return 'Filter Options';
       if (location.pathname === '/profile') return 'Profile';
@@ -35,6 +36,9 @@ function Layout({ children, theme, onThemeToggle }: LayoutProps) {
     }
     return '';
   };
+
+  // Check if current location is a chat page (for either role)
+  const isChatPage = location.pathname === '/chats' || location.pathname === '/professor/chats';
 
   return (
     <div className={`min-h-screen flex flex-col bg-[#F6F8FA] dark:bg-gray-900 ${theme === 'dark' ? 'dark' : ''}`}>
@@ -81,14 +85,21 @@ function Layout({ children, theme, onThemeToggle }: LayoutProps) {
                 <span className="text-xs mt-1">Calendar</span>
               </button>
               <button 
+                onClick={() => navigate('/professor/chats')}
+                className={`flex flex-col items-center ${location.pathname === '/professor/chats' ? 'text-[#00A3FF]' : 'text-gray-500 dark:text-gray-400'} relative`}
+              >
+                <MessageCircle className="w-6 h-6" />
+                <span className="text-xs mt-1">Chats</span>
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                  1
+                </span>
+              </button>
+              <button 
                 onClick={() => navigate('/professor/meetings')}
                 className={`flex flex-col items-center ${location.pathname === '/professor/meetings' ? 'text-[#00A3FF]' : 'text-gray-500 dark:text-gray-400'} relative`}
               >
                 <MessageCircle className="w-6 h-6" />
                 <span className="text-xs mt-1">Meetings</span>
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                  2
-                </span>
               </button>
               <button 
                 onClick={() => navigate('/professor/profile')}

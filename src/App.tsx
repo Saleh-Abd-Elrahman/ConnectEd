@@ -226,6 +226,22 @@ function AppContent() {
                     </ProtectedRoute>
                   } 
                 />
+                <Route 
+                  path="/professor/chats" 
+                  element={
+                    <ProtectedRoute requiredRole="professor">
+                      <Chats />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/professor/chats/:chatId" 
+                  element={
+                    <ProtectedRoute requiredRole="professor">
+                      <ChatConversation />
+                    </ProtectedRoute>
+                  } 
+                />
               </Routes>
             </Layout>
           </Router>

@@ -234,7 +234,8 @@ function Chats() {
     setMeetingReason('');
 
     // Navigate to meetings page to show the new request
-    navigate('/meetings');
+    const meetingsPath = currentUser.role === 'professor' ? '/professor/meetings' : '/meetings';
+    navigate(meetingsPath);
   };
 
   const handleCreateNewChat = async (e: React.FormEvent) => {
@@ -263,7 +264,8 @@ function Chats() {
       setRecipientSearchQuery('');
       
       // Navigate to the new chat
-      navigate(`/chats/${chatId}`);
+      const baseUrl = currentUser?.role === 'professor' ? '/professor/chats/' : '/chats/';
+      navigate(`${baseUrl}${chatId}`);
     } catch (error) {
       console.error("Failed to create chat:", error);
     }
@@ -271,7 +273,19 @@ function Chats() {
 
   const handleChatClick = (chat: Chat) => {
     setActiveChat(chat);
-    navigate(`/chats/${chat.id}`);
+    const baseUrl = currentUser?.role === 'professor' ? '/professor/chats/' : '/chats/';
+    navigate(`${baseUrl}${chat.id}`);
+  };
+
+  // Handle route prefix based on user role
+  const getChatsPath = () => {
+    return currentUser?.role === 'professor' ? '/professor/chats' : '/chats';
+  };
+
+  // Handle meeting request navigation
+  const handleMeetingRequest = () => {
+    const meetingsPath = currentUser?.role === 'professor' ? '/professor/meetings' : '/meetings';
+    navigate(meetingsPath);
   };
 
   const formatMessageTime = (timestamp: Date | { toDate: () => Date } | null) => {
@@ -349,13 +363,15 @@ function Chats() {
           <span>New Chat</span>
         </button>
         
-        <button
-          onClick={() => setShowMeetingModal(true)}
-          className="flex items-center space-x-2 px-4 py-2 bg-[#00A3FF] text-white rounded-full hover:bg-blue-600 transition-colors"
-        >
-          <Calendar className="w-4 h-4" />
-          <span>Request Meeting</span>
-        </button>
+        {currentUser?.role === 'student' && (
+          <button
+            onClick={() => setShowMeetingModal(true)}
+            className="flex items-center space-x-2 px-4 py-2 bg-[#00A3FF] text-white rounded-full hover:bg-blue-600 transition-colors"
+          >
+            <Calendar className="w-4 h-4" />
+            <span>Request Meeting</span>
+          </button>
+        )}
       </div>
 
       {/* Search */}
@@ -381,7 +397,8 @@ function Chats() {
             onClick={() => {
               if (user.id !== currentUser?.id) {
                 createChat([currentUser!.id, user.id], 'direct').then(chatId => {
-                  navigate(`/chats/${chatId}`);
+                  const baseUrl = currentUser?.role === 'professor' ? '/professor/chats/' : '/chats/';
+                  navigate(`${baseUrl}${chatId}`);
                 });
               }
             }}
