@@ -1,75 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock, CheckCircle, XCircle, Search, X } from 'lucide-react';
+import { useMeetings } from '../../contexts/MeetingsContext';
+import { Meeting, MeetingStatus } from '../../models/types';
+import { useAuth } from '../../contexts/AuthContext';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebaseConfig';
 
-type MeetingStatus = 'pending' | 'accepted' | 'rejected';
-
-interface Meeting {
-  id: number;
-  student: string;
-  course: string;
-  date: string;
-  time: string;
-  reason: string;
-  status: MeetingStatus;
-  studentImage?: string;
-  responseMessage?: string;
+interface StudentInfo {
+  displayName: string;
+  photoURL?: string;
 }
 
 function ProfessorMeetings() {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const { meetings, updateMeetingStatus, refreshMeetings, loading } = useMeetings();
   const [filter, setFilter] = useState<MeetingStatus | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [meetings, setMeetings] = useState<Meeting[]>([
-    {
-      id: 1,
-      student: 'Alex Johnson',
-      course: 'Business Innovation 1801',
-      date: '2025-03-15',
-      time: '14:00',
-      reason: 'Discuss project proposal',
-      status: 'pending',
-      studentImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e'
-    },
-    {
-      id: 2,
-      student: 'Sarah Chen',
-      course: 'Business Innovation 1801',
-      date: '2025-03-16',
-      time: '11:00',
-      reason: 'Review assignment feedback',
-      status: 'accepted',
-      studentImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
-      responseMessage: 'Looking forward to our meeting!'
-    },
-    {
-      id: 3,
-      student: 'Michael Zhang',
-      course: 'Advanced Economics 401',
-      date: '2025-03-20',
-      time: '15:00',
-      reason: 'Discuss research methodology',
-      status: 'pending',
-      studentImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d'
-    },
-    {
-      id: 4,
-      student: 'Emma Wilson',
-      course: 'Advanced Economics 401',
-      date: '2025-03-18',
-      time: '13:30',
-      reason: 'Career guidance discussion',
-      status: 'rejected',
-      studentImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80',
-      responseMessage: 'I have a faculty meeting at this time. Please reschedule for next week.'
-    }
-  ]);
+  
+  // Student info cache
+  const [studentInfo, setStudentInfo] = useState<Record<string, StudentInfo>>({});
 
   // Response Modal State
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
   const [responseMessage, setResponseMessage] = useState('');
   const [responseAction, setResponseAction] = useState<'accept' | 'reject' | null>(null);
+
+  // Load student info
+  useEffect(() => {
+    const fetchStudentInfo = async () => {
+      const newStudentInfo: Record<string, StudentInfo> = { ...studentInfo };
+      
+      for (const meeting of meetings) {
+        if (meeting.studentId && !newStudentInfo[meeting.studentId]) {
+          try {
+            const studentDoc = await getDoc(doc(db, 'users', meeting.studentId));
+            if (studentDoc.exists()) {
+              const data = studentDoc.data();
+              newStudentInfo[meeting.studentId] = {
+                displayName: data.displayName || 'Unknown Student',
+                photoURL: data.photoURL
+              };
+            }
+          } catch (error) {
+            console.error('Error fetching student info:', error);
+          }
+        }
+      }
+      
+      setStudentInfo(newStudentInfo);
+    };
+
+    if (meetings.length > 0) {
+      fetchStudentInfo();
+    }
+  }, [meetings]);
+
+  useEffect(() => {
+    // Load meetings when component mounts
+    refreshMeetings();
+  }, [refreshMeetings]);
 
   const getStatusColor = (status: MeetingStatus) => {
     switch (status) {
@@ -100,32 +92,55 @@ function ProfessorMeetings() {
     setShowResponseModal(true);
   };
 
-  const submitResponse = () => {
+  const submitResponse = async () => {
     if (!selectedMeeting || !responseAction) return;
 
-    setMeetings(meetings.map(meeting => 
-      meeting.id === selectedMeeting.id
-        ? {
-            ...meeting,
-            status: responseAction === 'accept' ? 'accepted' : 'rejected',
-            responseMessage: responseMessage.trim()
-          }
-        : meeting
-    ));
+    try {
+      await updateMeetingStatus(
+        selectedMeeting.id, 
+        responseAction === 'accept' ? 'accepted' : 'rejected',
+        responseMessage.trim() || undefined
+      );
+      
+      setShowResponseModal(false);
+      setSelectedMeeting(null);
+      setResponseAction(null);
+      setResponseMessage('');
+    } catch (error) {
+      console.error('Error updating meeting status:', error);
+    }
+  };
 
-    setShowResponseModal(false);
-    setSelectedMeeting(null);
-    setResponseAction(null);
-    setResponseMessage('');
+  // Format date to a more readable format
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  // Format time to a more readable format
+  const formatTime = (timeString: string) => {
+    return new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric'
+    });
   };
 
   const filteredMeetings = meetings
     .filter(meeting => filter === 'all' || meeting.status === filter)
-    .filter(meeting => 
-      searchQuery === '' ||
-      meeting.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      meeting.course.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    .filter(meeting => {
+      if (searchQuery === '') return true;
+      
+      const studentName = studentInfo[meeting.studentId]?.displayName || '';
+      const reason = meeting.reason || '';
+      const searchLower = searchQuery.toLowerCase();
+      
+      return studentName.toLowerCase().includes(searchLower) || 
+             reason.toLowerCase().includes(searchLower);
+    });
 
   return (
     <div className="p-4">
@@ -143,6 +158,12 @@ function ProfessorMeetings() {
         >
           Calendar
         </button>
+        <button
+          onClick={() => navigate('/professor/chats')}
+          className="px-4 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+        >
+          Chats
+        </button>
         <button className="px-4 py-2 text-[#00A3FF] border-b-2 border-[#00A3FF] font-medium">
           Meeting Requests
         </button>
@@ -154,7 +175,7 @@ function ProfessorMeetings() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
             type="text"
-            placeholder="Search by student or course..."
+            placeholder="Search by student or reason..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
@@ -178,73 +199,94 @@ function ProfessorMeetings() {
         </div>
       </div>
 
-      {/* Meetings List */}
-      <div className="mt-6 space-y-4">
-        {filteredMeetings.map((meeting) => (
-          <div
-            key={meeting.id}
-            className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm"
-          >
-            <div className="flex items-start space-x-4">
-              <img
-                src={meeting.studentImage}
-                alt={meeting.student}
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div className="flex-1">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-medium dark:text-white">{meeting.student}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{meeting.course}</p>
-                  </div>
-                  <div className={`px-3 py-1 rounded-full ${getStatusColor(meeting.status)} flex items-center space-x-1`}>
-                    {getStatusIcon(meeting.status)}
-                    <span className="text-sm capitalize">{meeting.status}</span>
-                  </div>
-                </div>
-                <div className="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                  <p>
-                    Date: {new Date(meeting.date).toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                  <p>
-                    Time: {new Date(`2000-01-01T${meeting.time}`).toLocaleTimeString('en-US', {
-                      hour: 'numeric',
-                      minute: 'numeric'
-                    })}
-                  </p>
-                  <p>Reason: {meeting.reason}</p>
-                  {meeting.responseMessage && (
-                    <p className="mt-2 italic">Response: {meeting.responseMessage}</p>
-                  )}
-                </div>
-                {meeting.status === 'pending' && (
-                  <div className="mt-4 flex space-x-2">
-                    <button
-                      onClick={() => handleResponse(meeting, 'accept')}
-                      className="px-4 py-2 bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-full hover:bg-green-200 dark:hover:bg-green-900/40 flex items-center space-x-1"
-                    >
-                      <CheckCircle className="w-4 h-4" />
-                      <span>Accept</span>
-                    </button>
-                    <button
-                      onClick={() => handleResponse(meeting, 'reject')}
-                      className="px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full hover:bg-red-200 dark:hover:bg-red-900/40 flex items-center space-x-1"
-                    >
-                      <XCircle className="w-4 h-4" />
-                      <span>Reject</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="rounded-full bg-slate-200 dark:bg-slate-700 h-12 w-12 mb-4"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24 mb-2.5"></div>
+            <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded w-32"></div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
+      {/* Meetings List */}
+      {!loading && (
+        <div className="mt-6 space-y-4">
+          {filteredMeetings.length === 0 ? (
+            <div className="text-center py-8 bg-white dark:bg-gray-800 rounded-lg">
+              <p className="text-gray-500 dark:text-gray-400">
+                {searchQuery || filter !== 'all' 
+                  ? 'No meetings match your search criteria.' 
+                  : 'No meeting requests yet.'}
+              </p>
+            </div>
+          ) : (
+            filteredMeetings.map((meeting) => {
+              const student = studentInfo[meeting.studentId] || { displayName: 'Unknown Student' };
+              
+              return (
+                <div
+                  key={meeting.id}
+                  className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm"
+                >
+                  <div className="flex items-start space-x-4">
+                    {student.photoURL ? (
+                      <img
+                        src={student.photoURL}
+                        alt={student.displayName}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                        {student.displayName.charAt(0)}
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h3 className="font-medium dark:text-white">{student.displayName}</h3>
+                          {meeting.classId && <p className="text-sm text-blue-500 dark:text-blue-400">Class Request</p>}
+                        </div>
+                        <div className={`px-3 py-1 rounded-full ${getStatusColor(meeting.status)} flex items-center space-x-1`}>
+                          {getStatusIcon(meeting.status)}
+                          <span className="text-sm capitalize">{meeting.status}</span>
+                        </div>
+                      </div>
+                      <div className="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                        <p>Date: {formatDate(meeting.date)}</p>
+                        <p>Time: {formatTime(meeting.time)}</p>
+                        <p>Reason: {meeting.reason}</p>
+                        {meeting.responseMessage && (
+                          <p className="mt-2 italic">Response: {meeting.responseMessage}</p>
+                        )}
+                      </div>
+                      {meeting.status === 'pending' && (
+                        <div className="mt-4 flex space-x-2">
+                          <button
+                            onClick={() => handleResponse(meeting, 'accept')}
+                            className="px-4 py-2 bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-full hover:bg-green-200 dark:hover:bg-green-900/40 flex items-center space-x-1"
+                          >
+                            <CheckCircle className="w-4 h-4" />
+                            <span>Accept</span>
+                          </button>
+                          <button
+                            onClick={() => handleResponse(meeting, 'reject')}
+                            className="px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full hover:bg-red-200 dark:hover:bg-red-900/40 flex items-center space-x-1"
+                          >
+                            <XCircle className="w-4 h-4" />
+                            <span>Reject</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
 
       {/* Response Modal */}
       {showResponseModal && selectedMeeting && (
@@ -252,7 +294,7 @@ function ProfessorMeetings() {
           <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md">
             <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
               <h3 className="text-lg font-semibold dark:text-white">
-                {responseAction === 'accept' ? 'Accept' : 'Reject'} Meeting Request
+                {responseAction === 'accept' ? 'Accept Meeting' : 'Reject Meeting'}
               </h3>
               <button
                 onClick={() => setShowResponseModal(false)}
@@ -262,53 +304,36 @@ function ProfessorMeetings() {
               </button>
             </div>
             <div className="p-4">
-              <div className="mb-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Meeting with {selectedMeeting.student} on{' '}
-                  {new Date(selectedMeeting.date).toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })} at{' '}
-                  {new Date(`2000-01-01T${selectedMeeting.time}`).toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric'
-                  })}
-                </p>
-              </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Response Message
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Optional Message
                 </label>
                 <textarea
                   value={responseMessage}
                   onChange={(e) => setResponseMessage(e.target.value)}
-                  placeholder={
-                    responseAction === 'accept'
-                      ? "Add a message for the student (e.g., 'Looking forward to our meeting!')"
-                      : "Add a reason for declining (e.g., 'I have a conflict at this time. Please reschedule.')"
-                  }
-                  rows={4}
-                  className="w-full px-3 py-2 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-[#00A3FF] focus:border-transparent"
-                />
+                  rows={3}
+                  placeholder={responseAction === 'accept' 
+                    ? "Add any additional details about the meeting..." 
+                    : "Provide a reason for rejecting or suggest an alternative..."}
+                  className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-900 dark:text-white resize-none"
+                ></textarea>
               </div>
-              <div className="mt-4 flex justify-end space-x-2">
+              <div className="flex justify-end mt-4">
                 <button
                   onClick={() => setShowResponseModal(false)}
-                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md mr-2 hover:bg-gray-300 dark:hover:bg-gray-600"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={submitResponse}
-                  className={`px-4 py-2 text-white rounded-full ${
-                    responseAction === 'accept'
-                      ? 'bg-green-500 hover:bg-green-600'
+                  className={`px-4 py-2 rounded-md text-white ${
+                    responseAction === 'accept' 
+                      ? 'bg-green-500 hover:bg-green-600' 
                       : 'bg-red-500 hover:bg-red-600'
                   }`}
                 >
-                  Confirm {responseAction === 'accept' ? 'Acceptance' : 'Rejection'}
+                  {responseAction === 'accept' ? 'Accept' : 'Reject'}
                 </button>
               </div>
             </div>
